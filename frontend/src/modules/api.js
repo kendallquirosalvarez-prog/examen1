@@ -2,24 +2,19 @@ import { BASE_URL, TIEMPO_MAXIMO_MS } from "./config.js";
 import { ErrorApi } from "./errores.js";
 import { obtenerToken, olvidarSesion } from "./auth.js";
 
-/**
- * [F1] Cliente HTTP único de la aplicación.
- * Ningún otro archivo llama a fetch directamente (salvo auth.js).
- */
 export const request = async (ruta, opciones = {}) => {
   const headers = { Accept: "application/json", ...opciones.headers };
 
   const token = obtenerToken();
   if (token) headers.Authorization = `Bearer ${token}`;
 
-  // Un objeto en body se envía como JSON
   let body = opciones.body;
   if (body && typeof body === "object" && !(body instanceof FormData)) {
     headers["Content-Type"] = "application/json";
     body = JSON.stringify(body);
   }
 
-  // Cancela la petición si tarda más del tiempo máximo
+  // se cancela a los 8 segundos
   const controlador = new AbortController();
   const temporizador = setTimeout(() => controlador.abort(), TIEMPO_MAXIMO_MS);
 

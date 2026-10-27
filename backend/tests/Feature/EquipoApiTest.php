@@ -5,13 +5,6 @@ use App\Models\Equipo;
 use App\Models\User;
 use Laravel\Sanctum\Sanctum;
 
-/*
-| [B6] Cada prueba verifica el código de estado Y algo más
-| (encabezado, estructura, mensaje o estado de la base).
-|
-| Ejecute:  php artisan test --filter=EquipoApi
-*/
-
 beforeEach(function () {
     Sanctum::actingAs(User::factory()->create());
 });

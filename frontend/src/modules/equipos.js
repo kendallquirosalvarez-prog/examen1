@@ -4,11 +4,6 @@ import { request } from "./api.js";
 // Respuesta: { data: [ { id, nombre }, ... ] }
 export const listarCategorias = () => request("/categorias");
 
-/**
- * [F1] Funciones de acceso a la API de equipos.
- * Todas usan request(); ninguna llama a fetch.
- */
-
 // GET /equipos?page=<pagina>&per_page=<porPagina>
 // Respuesta: { data: [...], links: {...}, meta: { current_page, last_page, from, to, total, ... } }
 export const listarEquipos = (pagina = 1, porPagina = 6) => {

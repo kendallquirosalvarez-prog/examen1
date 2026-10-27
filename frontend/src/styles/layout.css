@@ -1,11 +1,3 @@
-/* =========================================================================
-   [F5] Maquetación responsiva (mobile first)
-   - Móvil: una columna (formulario arriba, listado abajo).
-   - Desde 900px: Grid de 320px + 1fr con el formulario sticky.
-   - Lista con auto-fill/minmax(220px, 1fr), sin media query.
-   - Barras con Flexbox.
-   ========================================================================= */
-
 .layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -36,7 +28,6 @@
   margin: 0;
   padding: 0;
   display: grid;
-  /* min() evita el desplazamiento horizontal en pantallas de menos de 220px útiles */
   grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr));
   gap: 1rem;
 }

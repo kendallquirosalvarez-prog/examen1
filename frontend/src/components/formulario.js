@@ -32,9 +32,6 @@ const mostrarErrores = (errores) => {
   }
 };
 
-/**
- * [F3] Formulario de registro de equipos.
- */
 export const iniciarFormulario = ({ alGuardar }) => {
   cargarCategorias();
 

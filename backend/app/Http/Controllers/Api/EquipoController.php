@@ -9,20 +9,6 @@ use App\Models\Equipo;
 use App\Services\EquipoService;
 use Illuminate\Http\Request;
 
-/**
- * [B3] Controlador delgado: recibe, delega en el servicio y responde.
- *
- *  GET    /api/equipos?page=&per_page=&q=&estado=  200  colección paginada con data, links y meta
- *                                                       per_page por omisión 10, tope máximo 50
- *  GET    /api/equipos/{id}                        200  | 404
- *  POST   /api/equipos                             201 + encabezado Location | 422
- *  PUT    /api/equipos/{id}                        200  | 404 | 422
- *  DELETE /api/equipos/{id}                        204  | 404 | 409 (R1)
- *  POST   /api/equipos/{id}/prestamo               200  | 404 | 409 (R2)
- *
- * El 404 lo produce el route model binding; el 422, GuardarEquipoRequest;
- * el 409, bootstrap/app.php al recibir ReglaNegocioException.
- */
 class EquipoController extends Controller
 {
     public function __construct(private EquipoService $service)
@@ -31,7 +17,7 @@ class EquipoController extends Controller
 
     public function index(Request $request)
     {
-        // Tope de 50 impuesto por el servidor, mínimo 1
+        // maximo 50 por pagina
         $porPagina = min(max((int) $request->query('per_page', 10), 1), 50);
 
         $equipos = $this->service->listar(

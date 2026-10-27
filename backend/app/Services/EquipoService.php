@@ -6,31 +6,13 @@ use App\Exceptions\ReglaNegocioException;
 use App\Models\Equipo;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
-/**
- * [B2] Capa de negocio de equipos.
- *
- * Esta clase NO conoce HTTP: no usa request(), response(), abort() ni códigos
- * de estado. Cuando una regla del dominio lo impide, lanza ReglaNegocioException
- * y bootstrap/app.php la traduce a 409.
- *
- * Reglas de negocio:
- *  R1. No se puede eliminar un equipo que está prestado.
- *  R2. Solo se puede prestar un equipo disponible.
- */
 class EquipoService
 {
-    /**
-     * Listado paginado con la categoría cargada de forma anticipada (sin N+1),
-     * ordenado por código. Filtros opcionales:
-     *  - $q:      busca en código o nombre (coincidencia parcial)
-     *  - $estado: filtra por estado exacto
-     */
     public function listar(?string $q, ?string $estado, int $porPagina): LengthAwarePaginator
     {
         return Equipo::query()
             ->with('categoria')
             ->when($q, function ($query, $q) {
-                // Agrupado para que el OR no se mezcle con el filtro de estado
                 $query->where(function ($sub) use ($q) {
                     $sub->where('codigo', 'like', "%{$q}%")
                         ->orWhere('nombre', 'like', "%{$q}%");

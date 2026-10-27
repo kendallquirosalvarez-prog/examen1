@@ -17,7 +17,6 @@ let ultimaPagina = 1;
 export const formatearFecha = (iso) =>
   new Date(`${iso}T00:00:00`).toLocaleDateString("es-CR", { day: "numeric", month: "short", year: "numeric" });
 
-// Crea una tarjeta a partir de la plantilla; solo textContent con datos de la API
 const crearTarjeta = (equipo) => {
   const $fragmento = $plantilla.content.cloneNode(true);
   const $li = $fragmento.querySelector("li");
@@ -34,9 +33,6 @@ const crearTarjeta = (equipo) => {
   return $fragmento;
 };
 
-/**
- * [F2] Listado y paginación.
- */
 export const cargarPagina = async (pagina = 1) => {
   $lista.setAttribute("aria-busy", "true");
 
@@ -70,9 +66,6 @@ export const cargarPagina = async (pagina = 1) => {
   }
 };
 
-/**
- * [F4] Eliminación con delegación de eventos: un solo listener en $lista.
- */
 const alHacerClicEnLista = async (evento) => {
   const $boton = evento.target.closest(".btn-eliminar");
   if (!$boton) return;
@@ -85,7 +78,7 @@ const alHacerClicEnLista = async (evento) => {
     await eliminarEquipo($tarjeta.dataset.id);
     mostrarMensaje("exito", "Equipo eliminado.");
 
-    // Si era el último de la página (y no es la primera), retrocede una página
+    // si la pagina quedo vacia se devuelve a la anterior
     const quedoVacia = $lista.querySelectorAll(".tarjeta").length === 1;
     await cargarPagina(quedoVacia && paginaActual > 1 ? paginaActual - 1 : paginaActual);
   } catch (error) {
@@ -100,7 +93,6 @@ const alHacerClicEnLista = async (evento) => {
 export const iniciarListado = () => {
   $lista.addEventListener("click", alHacerClicEnLista);
 
-  // [F2] Botones de paginación
   $btnAnterior.addEventListener("click", () => cargarPagina(paginaActual - 1));
   $btnSiguiente.addEventListener("click", () => cargarPagina(paginaActual + 1));
 

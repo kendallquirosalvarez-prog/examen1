@@ -22,13 +22,11 @@ return Application::configure(basePath: dirname(__DIR__))
             fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
         );
 
-        // [B5] Manejo centralizado de errores: una regla de negocio violada
-        // se responde como 409 en un único lugar.
         $exceptions->render(fn (ReglaNegocioException $e) => response()->json([
             'mensaje' => $e->getMessage(),
             'codigo'  => 'REGLA_NEGOCIO',
         ], 409));
 
-        // No son errores del sistema, son reglas del dominio: no van a la bitácora
+        // no se guardan en el log
         $exceptions->dontReport([ReglaNegocioException::class]);
     })->create();
