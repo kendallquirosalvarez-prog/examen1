@@ -5,6 +5,7 @@ const $form = document.querySelector("#form-equipo");
 const $selectCategoria = document.querySelector("#categoria_id");
 const $btnGuardar = document.querySelector("#btn-guardar");
 
+// llena el select con las categorias de la api
 const cargarCategorias = async () => {
   try {
     const { data } = await listarCategorias();
@@ -24,6 +25,7 @@ const limpiarErrores = () => {
   $form.querySelectorAll("[aria-invalid]").forEach(($campo) => $campo.removeAttribute("aria-invalid"));
 };
 
+// pone el primer error de cada campo debajo del input
 const mostrarErrores = (errores) => {
   for (const [campo, [mensaje]] of Object.entries(errores)) {
     const $error = $form.querySelector(`[data-error="${campo}"]`);
@@ -40,6 +42,7 @@ export const iniciarFormulario = ({ alGuardar }) => {
     limpiarErrores();
 
     const datos = Object.fromEntries(new FormData($form));
+    // FormData devuelve texto, la api espera numeros
     datos.categoria_id = Number(datos.categoria_id);
     datos.costo_interno = Number(datos.costo_interno);
 
@@ -59,6 +62,7 @@ export const iniciarFormulario = ({ alGuardar }) => {
         mostrarMensaje("error", "No se pudo registrar el equipo. Intente de nuevo.");
       }
     } finally {
+      // el boton se restaura siempre, haya error o no
       $btnGuardar.disabled = false;
       $btnGuardar.textContent = textoOriginal;
     }

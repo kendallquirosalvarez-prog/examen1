@@ -29,11 +29,13 @@ class EquipoController extends Controller
         return EquipoResource::collection($equipos);
     }
 
+    // si el id no existe laravel responde 404 solo
     public function show(Equipo $equipo)
     {
         return new EquipoResource($equipo->load('categoria'));
     }
 
+    // responde 201 con el encabezado Location del equipo nuevo
     public function store(GuardarEquipoRequest $request)
     {
         $equipo = $this->service->crear($request->validated());
@@ -49,6 +51,7 @@ class EquipoController extends Controller
         return new EquipoResource($this->service->actualizar($equipo, $request->validated()));
     }
 
+    // 204 si se elimina, 409 si esta prestado (lo maneja bootstrap/app.php)
     public function destroy(Equipo $equipo)
     {
         $this->service->eliminar($equipo);

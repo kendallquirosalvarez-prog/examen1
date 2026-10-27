@@ -22,6 +22,7 @@ return Application::configure(basePath: dirname(__DIR__))
             fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
         );
 
+        // las reglas de negocio se responden con 409
         $exceptions->render(fn (ReglaNegocioException $e) => response()->json([
             'mensaje' => $e->getMessage(),
             'codigo'  => 'REGLA_NEGOCIO',

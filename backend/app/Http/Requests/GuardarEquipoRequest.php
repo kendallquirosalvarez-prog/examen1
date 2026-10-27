@@ -12,6 +12,7 @@ class GuardarEquipoRequest extends FormRequest
         return true;
     }
 
+    // reglas de validacion para crear y editar
     public function rules(): array
     {
         // al crear viene null, al editar es el equipo de la ruta
@@ -30,6 +31,7 @@ class GuardarEquipoRequest extends FormRequest
         ];
     }
 
+    // mensajes en español por cada campo
     public function messages(): array
     {
         return [

@@ -9,6 +9,7 @@ class EquipoResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
+        // solo los campos del contrato, sin costo_interno ni fechas de registro
         return [
             'id'                => $this->id,
             'codigo'            => $this->codigo,

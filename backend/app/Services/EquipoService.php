@@ -8,6 +8,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class EquipoService
 {
+    // lista paginada con la categoria cargada y filtros por q y estado
     public function listar(?string $q, ?string $estado, int $porPagina): LengthAwarePaginator
     {
         return Equipo::query()
@@ -23,11 +24,13 @@ class EquipoService
             ->paginate($porPagina);
     }
 
+    // crea el equipo y lo devuelve con su categoria
     public function crear(array $datos): Equipo
     {
         return Equipo::create($datos)->load('categoria');
     }
 
+    // actualiza y devuelve el equipo con su categoria
     public function actualizar(Equipo $equipo, array $datos): Equipo
     {
         $equipo->update($datos);
@@ -56,6 +59,7 @@ class EquipoService
             throw new ReglaNegocioException('El equipo ya se encuentra prestado.');
         }
 
+        // si esta disponible se marca como prestado
         $equipo->update(['estado' => 'prestado']);
 
         return $equipo->load('categoria');

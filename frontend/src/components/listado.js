@@ -17,6 +17,7 @@ let ultimaPagina = 1;
 export const formatearFecha = (iso) =>
   new Date(`${iso}T00:00:00`).toLocaleDateString("es-CR", { day: "numeric", month: "short", year: "numeric" });
 
+// clona la plantilla y la llena con textContent
 const crearTarjeta = (equipo) => {
   const $fragmento = $plantilla.content.cloneNode(true);
   const $li = $fragmento.querySelector("li");
@@ -33,6 +34,7 @@ const crearTarjeta = (equipo) => {
   return $fragmento;
 };
 
+// carga una pagina del inventario y actualiza el resumen y los botones
 export const cargarPagina = async (pagina = 1) => {
   $lista.setAttribute("aria-busy", "true");
 
@@ -66,6 +68,7 @@ export const cargarPagina = async (pagina = 1) => {
   }
 };
 
+// un solo listener en la lista para todos los botones de eliminar
 const alHacerClicEnLista = async (evento) => {
   const $boton = evento.target.closest(".btn-eliminar");
   if (!$boton) return;
@@ -82,6 +85,7 @@ const alHacerClicEnLista = async (evento) => {
     const quedoVacia = $lista.querySelectorAll(".tarjeta").length === 1;
     await cargarPagina(quedoVacia && paginaActual > 1 ? paginaActual - 1 : paginaActual);
   } catch (error) {
+    // 409: se muestra el mensaje que manda la api
     if (error.status === 409) {
       mostrarMensaje("error", error.datos.mensaje);
     } else {

@@ -20,6 +20,7 @@ it('crea un equipo y responde 201 con el encabezado Location', function () {
         'costo_interno'     => 350000,
     ]);
 
+    // ademas del 201 se revisa el Location, el json y la base de datos
     $equipo = Equipo::where('codigo', 'EQ-9001')->first();
 
     $respuesta->assertCreated()
@@ -32,6 +33,7 @@ it('crea un equipo y responde 201 con el encabezado Location', function () {
 });
 
 it('rechaza un equipo con datos inválidos y responde 422 con errores por campo', function () {
+    // todos los campos van mal a proposito
     $this->postJson('/api/equipos', [
         'codigo'            => 'ABC',
         'nombre'            => 'X',
@@ -50,6 +52,7 @@ it('rechaza un equipo con datos inválidos y responde 422 con errores por campo'
 });
 
 it('impide eliminar un equipo prestado y responde 409', function () {
+    // equipo prestado para probar la regla R1
     $equipo = Equipo::factory()->prestado()->create();
 
     $this->deleteJson("/api/equipos/{$equipo->id}")
